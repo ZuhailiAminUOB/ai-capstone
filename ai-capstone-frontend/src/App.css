@@ -1,0 +1,53 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+.main {
+  padding: 20px;
+}
+
+.transaction-form {
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  width: 300px;
+  background-color: #f9f9f9;
+}
+
+.transaction-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.transaction-form input,
+.transaction-form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.transaction-form button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.transaction-form button:hover {
+  background-color: #555;
+}
+
+.dashboard {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+}
