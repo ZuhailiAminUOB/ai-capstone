@@ -67,7 +67,7 @@ function TransactionForm({ onSubmit }) {
         </select>
       </label>
       <label>
-        Is a credit card used in the transaction?
+        Was a credit card used in the transaction?
         <select
           name="used_chip"
           value={formData.used_chip}
