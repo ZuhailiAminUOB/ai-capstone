@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import TransactionForm from './components/TransactionForm';
 import Dashboard from './components/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import FraudParagraph from './components/FraudParagraph';
 
 function App() {
   const [transactionData, setTransactionData] = useState(null);
@@ -24,6 +25,7 @@ function App() {
     <div className="App">
       <Navbar />
       <main>
+        <FraudParagraph/>
         <TransactionForm onSubmit={handleFormSubmit} />
         <Dashboard transactionData={transactionData} fraudResult={fraudResult} />
       </main>
