@@ -1,20 +1,20 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from '../images/uob_logo.png';
+import logo from '../images/uob_logo_bluebg.png';
 
 function Navbar() {
   return (
-    <nav class="navbar bg-body-tertiar bg-light border-bottom border-black border-3">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src={logo} alt="UOB" class-name="img-fluid" style={{ width: '100px', height: 'auto' }}/>
-    </a>
-    <a class="navbar-brand text-dark">UOB Fraud Detection Web Application</a>
-    <form class="d-flex" role="search">
-      <button class="btn btn-outline-primary" type="submit">Login</button>
-    </form>
-  </div>
-</nav>
+    <nav className="navbar border-bottom border-dark border-3" style={{ backgroundColor: '#133274' }}>
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">
+          <img src={logo} alt="UOB" className="img-fluid" style={{ width: '100px', height: 'auto' }} />
+        </a>
+        <a className="navbar-brand text-light">UOB Fraud Detection Web Application</a>
+        <form className="d-flex" role="search">
+          <button className="btn btn-outline-light" type="submit">Login</button>
+        </form>
+      </div>
+    </nav>
   );
 }
 

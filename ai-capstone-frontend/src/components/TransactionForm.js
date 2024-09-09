@@ -105,7 +105,7 @@ function TransactionForm({ onSubmit }) {
           <option value="0">No</option>
         </select>
       </label>
-      <button type="button" class="btn btn-primary text-light">Submit</button>
+      <button type="button" class="btn btn-outline-light">Submit</button>
     </form>
   );
 }
