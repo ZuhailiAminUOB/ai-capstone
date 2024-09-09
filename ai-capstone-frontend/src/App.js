@@ -3,6 +3,7 @@ import './App.css'; // Make sure to create this file for styles
 import Navbar from './components/Navbar';
 import TransactionForm from './components/TransactionForm';
 import Dashboard from './components/Dashboard';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [transactionData, setTransactionData] = useState(null);
