@@ -82,7 +82,7 @@ const Login = () => {
                     <p>
                         Not Registered?<br />
                         <span className="line">
-                            <a href="/register">Sign In</a>
+                            <a href="/register">Sign Up</a>
                         </span>
                     </p>
                 </section>
