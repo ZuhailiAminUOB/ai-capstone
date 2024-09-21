@@ -27,8 +27,8 @@ function App() {
         <Navbar />
         <main>
           <Routes>
-            <Route path ="/login" element={<Login onSubmit={handleFormSubmit} />} />
             <Route path="/register" element={<Register onSubmit={handleFormSubmit} />} />
+            <Route path ="/login" element={<Login onSubmit={handleFormSubmit} />} />
             <Route path="/transaction" element={
               <>
                 <FraudParagraph/>
@@ -36,7 +36,7 @@ function App() {
                 <Dashboard transactionData={transactionData} fraudResult={fraudResult} />
               </>
             } />
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/register" />} />
           </Routes>
         </main>
       </div>

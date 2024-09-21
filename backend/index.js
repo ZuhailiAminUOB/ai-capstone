@@ -45,20 +45,19 @@ db.connect((err) => {
       }
       console.log('Using database registerdb');
 
-      // Create the register table if it doesn't exist
+      // Create the reg table if it doesn't exist
       const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS register (
+        CREATE TABLE IF NOT EXISTS reg (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          Username VARCHAR(255) NOT NULL UNIQUE,
-          Password VARCHAR(255) NOT NULL
-        )
-      `;
+          Username VARCHAR(255) NOT NULL UNIQUE COLLATE utf8_bin,
+          Password VARCHAR(255) NOT NULL COLLATE utf8_bin
+        )`;
       db.query(createTableQuery, (err) => {
         if (err) {
           console.error('Error creating table:', err);
           return;
         }
-        console.log('Table register created or already exists.');
+        console.log('Table reg created or already exists.');
       });
     });
   });
@@ -74,7 +73,7 @@ app.post('/login', (req, res) => {
       return res.status(400).json({ message: 'Username and password are required.' });
   }
 
-  const checkLoginQuery = 'SELECT * FROM register WHERE Username = ? AND Password = ?';
+  const checkLoginQuery = 'SELECT * FROM reg WHERE BINARY Username = ? AND BINARY Password = ?'; // Ensure BINARY for both Username and Password
   db.query(checkLoginQuery, [user, pwd], (err, results) => {
       if (err) {
           return res.status(500).json({ message: 'Error checking login credentials.' });
@@ -82,8 +81,13 @@ app.post('/login', (req, res) => {
       if (results.length === 0) {
           return res.status(401).json({ message: 'Incorrect Username or Password' });
       }
+  
       // If login is successful
-      return res.status(200).json({ message: 'Login successful', accessToken: 'fake-jwt-token', roles: ['user'] });
+      return res.status(200).json({ 
+          message: 'Login successful', 
+          accessToken: 'fake-jwt-token', 
+          roles: ['user'] 
+      });
   });
 });
 
@@ -98,7 +102,7 @@ app.post('/register', (req, res) => {
   }
 
   // Check if username already exists
-  const checkUserQuery = 'SELECT * FROM register WHERE Username = ?';
+  const checkUserQuery = 'SELECT * FROM reg WHERE Username = ?';
   db.query(checkUserQuery, [user], (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Error checking user.' });
@@ -108,7 +112,7 @@ app.post('/register', (req, res) => {
     }
 
       // Insert the new user into the database
-      const insertUserQuery = 'INSERT INTO register (Username, Password) VALUES (?, ?)';
+      const insertUserQuery = 'INSERT INTO reg (Username, Password) VALUES (?, ?)';
       db.query(insertUserQuery, [user, pwd], (err, result) => {
         if (err) {
           return res.status(500).json({ message: 'Error registering user.' });

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation Regex
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{12,24}$/;
 const REGISTER_URL = 'http://localhost:5000/register'; // Ensure this is correct
 
 const Register = () => {
@@ -152,7 +152,7 @@ const Register = () => {
                         />
                         <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            8 to 24 characters. Must include uppercase and lowercase letters, a number, and a special character.
+                            12 to 24 characters. Must include uppercase and lowercase letters, a number, and a special character.
                         </p>
 
                         {/* Confirm Password Input */}
