@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation Regex
@@ -85,8 +84,6 @@ const Register = () => {
                 // Handle different status codes
                 if (response.status === 409) {
                     throw new Error('Username Taken');
-                }else if (response.status === 410) {
-                    throw new Error('Password Taken');
                 }else {
                     throw new Error('Registration Failed');
                 }
@@ -97,14 +94,14 @@ const Register = () => {
             errRef.current.focus();
         }
     }
-    
+
     return (
         <>
             {success ? (
                 <section>
                     <h1>Success</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="/login">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -185,7 +182,7 @@ const Register = () => {
                     <p>
                         Already registered?<br />
                         <span className="line">
-                            <a href="#">Sign In</a>
+                            <a href="/login">Sign In</a>
                         </span>
                     </p>
                 </section>

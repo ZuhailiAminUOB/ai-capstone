@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FraudParagraph from './components/FraudParagraph';
 import Register from './components/Register';
+import Login from './components/Login';
 
 function App() {
   const [transactionData, setTransactionData] = useState(null);
@@ -26,6 +27,7 @@ function App() {
         <Navbar />
         <main>
           <Routes>
+            <Route path ="/login" element={<Login onSubmit={handleFormSubmit} />} />
             <Route path="/register" element={<Register onSubmit={handleFormSubmit} />} />
             <Route path="/transaction" element={
               <>
@@ -34,7 +36,7 @@ function App() {
                 <Dashboard transactionData={transactionData} fraudResult={fraudResult} />
               </>
             } />
-            <Route path="/" element={<Navigate to="/register" />} />
+            <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </main>
       </div>

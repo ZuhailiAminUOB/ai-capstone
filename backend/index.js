@@ -14,21 +14,79 @@ app.use(cors({
   credentials: true // Allow cookies/credentials
 }));
 
-// MySQL connection
+// MySQL connection, make sure you have MySQL installed 
 const db = mysql.createConnection({
   host: 'localhost', // or your database host
   user: 'root', // your MySQL username
   password: 'root', // your MySQL password
-  database: 'regdb' // your MySQL database name
 });
 
+// Connect to MySQL and create the database if it doesn't exist
 db.connect((err) => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
     return;
   }
   console.log('Connected to MySQL');
+
+  // Create the database if it doesn't exist
+  db.query('CREATE DATABASE IF NOT EXISTS registerdb', (err) => {
+    if (err) {
+      console.error('Error creating database:', err);
+      return;
+    }
+    console.log('Database registerdb created or already exists.');
+
+    // Use the database
+    db.query('USE registerdb', (err) => {
+      if (err) {
+        console.error('Error selecting database:', err);
+        return;
+      }
+      console.log('Using database registerdb');
+
+      // Create the register table if it doesn't exist
+      const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS register (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          Username VARCHAR(255) NOT NULL UNIQUE,
+          Password VARCHAR(255) NOT NULL
+        )
+      `;
+      db.query(createTableQuery, (err) => {
+        if (err) {
+          console.error('Error creating table:', err);
+          return;
+        }
+        console.log('Table register created or already exists.');
+      });
+    });
+  });
 });
+
+
+//login
+app.post('/login', (req, res) => {
+  const { user, pwd } = req.body;
+
+  // Validate user and password input
+  if (!user || !pwd) {
+      return res.status(400).json({ message: 'Username and password are required.' });
+  }
+
+  const checkLoginQuery = 'SELECT * FROM register WHERE Username = ? AND Password = ?';
+  db.query(checkLoginQuery, [user, pwd], (err, results) => {
+      if (err) {
+          return res.status(500).json({ message: 'Error checking login credentials.' });
+      }
+      if (results.length === 0) {
+          return res.status(401).json({ message: 'Incorrect Username or Password' });
+      }
+      // If login is successful
+      return res.status(200).json({ message: 'Login successful', accessToken: 'fake-jwt-token', roles: ['user'] });
+  });
+});
+
 
 // Registration route
 app.post('/register', (req, res) => {
@@ -40,7 +98,7 @@ app.post('/register', (req, res) => {
   }
 
   // Check if username already exists
-  const checkUserQuery = 'SELECT * FROM registers WHERE Username = ?';
+  const checkUserQuery = 'SELECT * FROM register WHERE Username = ?';
   db.query(checkUserQuery, [user], (err, results) => {
     if (err) {
       return res.status(500).json({ message: 'Error checking user.' });
@@ -49,18 +107,8 @@ app.post('/register', (req, res) => {
       return res.status(409).json({ message: 'Username taken' });
     }
 
-    // Check if password already exists
-    const checkPwdQuery = 'SELECT * FROM registers WHERE Password = ?';
-    db.query(checkPwdQuery, [pwd], (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Error checking password.' });
-      }
-      if (results.length > 0) {
-        return res.status(410).json({ message: 'Password taken' });
-      }
-
       // Insert the new user into the database
-      const insertUserQuery = 'INSERT INTO registers (Username, Password) VALUES (?, ?)';
+      const insertUserQuery = 'INSERT INTO register (Username, Password) VALUES (?, ?)';
       db.query(insertUserQuery, [user, pwd], (err, result) => {
         if (err) {
           return res.status(500).json({ message: 'Error registering user.' });
@@ -69,7 +117,7 @@ app.post('/register', (req, res) => {
       });
     });
   });
-});
+
 
 // Start the server
 const PORT = 5000;
