@@ -1,4 +1,8 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for
+import requests
+import folium
+import time
+import math
 
 import joblib
 import os
@@ -94,6 +98,46 @@ def clear_transactions():
         conn.close()
     
     return redirect(url_for('index'))
+
+@app.route('/register_card', methods=['GET', 'POST'])
+def register_card():
+    #get details from register_card.html
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            name = data.get('name')
+            userAddress = data.get('userAddress')
+            annual_income = data.get('annual_income')
+
+            print("name: "+  name + " address: " + userAddress + " income: " + annual_income)
+
+            #processing
+            BASE_URL = "https://nominatim.openstreetmap.org/search?format=json"
+            headers = {"User-Agent": "TestFraudDetection"}
+
+            response = requests.get(f"{BASE_URL}&q={userAddress}", headers=headers)
+            data = response.json()
+            latitude = data[0].get('lat')
+            longitude = data[0].get('lon')
+
+            user_location = float(latitude), float(longitude)
+            print(user_location)
+
+            m = folium.Map(location=user_location, zoom_start=15, width=800, height=400)
+            folium.Marker(location=[latitude, longitude], popup=userAddress).add_to(m)
+
+            map_filename = f"static/{name}_map.html"
+            m.save(map_filename)
+
+            # map_html = m._repr_html_()
+            return jsonify({"map_url": map_filename})
+
+        except Exception as e:
+            print("Error: ", e)
+            return jsonify({"error": str(e)})
+
+    return render_template('register_card.html')
+
 
 
 if __name__ == '__main__':
