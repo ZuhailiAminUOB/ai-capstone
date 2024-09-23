@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
@@ -10,15 +11,15 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend address (no `/register`)
+  origin: '*', // Frontend address (no `/register`)
   credentials: true // Allow cookies/credentials
 }));
 
 // MySQL connection, make sure you have MySQL installed 
 const db = mysql.createConnection({
-  host: 'localhost', // or your database host
-  user: 'root', // your MySQL username
-  password: 'root', // your MySQL password
+  host: process.env.DB_HOST, // from .env
+  user: process.env.DB_USER, // from .env
+  password: process.env.DB_PASSWORD, // from .env
 });
 
 // Connect to MySQL and create the database if it doesn't exist
