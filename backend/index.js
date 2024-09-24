@@ -1,128 +1,86 @@
+require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2');
+const sqlite3 = require('sqlite3').verbose(); // SQLite library
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-
-// CORS configuration
 app.use(cors({
-  origin: '*', // Frontend address (no `/register`)
-  credentials: true // Allow cookies/credentials
+  origin: 'http://localhost:3000', // Frontend address
+  credentials: true
 }));
 
-// MySQL connection, make sure you have MySQL installed 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST, // from .env
-  user: process.env.DB_USER, // from .env
-  password: process.env.DB_PASSWORD, // from .env
-});
-
-// Connect to MySQL and create the database if it doesn't exist
-db.connect((err) => {
+// SQLite connection
+const db = new sqlite3.Database(process.env.DB_FILE, (err) => {
   if (err) {
-    console.error('Error connecting to MySQL:', err);
+    console.error('Error connecting to SQLite:', err);
     return;
   }
-  console.log('Connected to MySQL');
+  console.log('Connected to SQLite');
 
-  // Create the database if it doesn't exist
-  db.query('CREATE DATABASE IF NOT EXISTS registerdb', (err) => {
+  // Create the table if it doesn't exist
+  db.run(`
+    CREATE TABLE IF NOT EXISTS reg (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Username TEXT NOT NULL UNIQUE,
+      Password TEXT NOT NULL
+    )
+  `, (err) => {
     if (err) {
-      console.error('Error creating database:', err);
+      console.error('Error creating table:', err);
       return;
     }
-    console.log('Database registerdb created or already exists.');
-
-    // Use the database
-    db.query('USE registerdb', (err) => {
-      if (err) {
-        console.error('Error selecting database:', err);
-        return;
-      }
-      console.log('Using database registerdb');
-
-      // Create the reg table if it doesn't exist
-      const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS reg (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          Username VARCHAR(255) NOT NULL UNIQUE COLLATE utf8_bin,
-          Password VARCHAR(255) NOT NULL COLLATE utf8_bin
-        )`;
-      db.query(createTableQuery, (err) => {
-        if (err) {
-          console.error('Error creating table:', err);
-          return;
-        }
-        console.log('Table reg created or already exists.');
-      });
-    });
+    console.log('Table reg created or already exists.');
   });
 });
-
-
-//login
-app.post('/login', (req, res) => {
-  const { user, pwd } = req.body;
-
-  // Validate user and password input
-  if (!user || !pwd) {
-      return res.status(400).json({ message: 'Username and password are required.' });
-  }
-
-  const checkLoginQuery = 'SELECT * FROM reg WHERE BINARY Username = ? AND BINARY Password = ?'; // Ensure BINARY for both Username and Password
-  db.query(checkLoginQuery, [user, pwd], (err, results) => {
-      if (err) {
-          return res.status(500).json({ message: 'Error checking login credentials.' });
-      }
-      if (results.length === 0) {
-          return res.status(401).json({ message: 'Incorrect Username or Password' });
-      }
-  
-      // If login is successful
-      return res.status(200).json({ 
-          message: 'Login successful', 
-          accessToken: 'fake-jwt-token', 
-          roles: ['user'] 
-      });
-  });
-});
-
 
 // Registration route
 app.post('/register', (req, res) => {
   const { user, pwd } = req.body;
 
-  // Validate user and password input
   if (!user || !pwd) {
     return res.status(400).json({ message: 'Username and password are required.' });
   }
 
-  // Check if username already exists
-  const checkUserQuery = 'SELECT * FROM reg WHERE Username = ?';
-  db.query(checkUserQuery, [user], (err, results) => {
+  db.get('SELECT * FROM reg WHERE Username = ?', [user], (err, row) => {
     if (err) {
       return res.status(500).json({ message: 'Error checking user.' });
     }
-    if (results.length > 0) {
+    if (row) {
       return res.status(409).json({ message: 'Username taken' });
     }
 
-      // Insert the new user into the database
-      const insertUserQuery = 'INSERT INTO reg (Username, Password) VALUES (?, ?)';
-      db.query(insertUserQuery, [user, pwd], (err, result) => {
-        if (err) {
-          return res.status(500).json({ message: 'Error registering user.' });
-        }
-        res.status(201).json({ message: 'User registered successfully!' });
-      });
+    db.run('INSERT INTO reg (Username, Password) VALUES (?, ?)', [user, pwd], function(err) {
+      if (err) {
+        return res.status(500).json({ message: 'Error registering user.' });
+      }
+      res.status(201).json({ message: 'User registered successfully!' });
     });
   });
+});
 
+// Login route
+app.post('/login', (req, res) => {
+  const { user, pwd } = req.body;
+
+  if (!user || !pwd) {
+    return res.status(400).json({ message: 'Username and password are required.' });
+  }
+
+  db.get('SELECT * FROM reg WHERE Username = ? AND Password = ?', [user, pwd], (err, row) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error checking login credentials.' });
+    }
+    if (!row) {
+      return res.status(401).json({ message: 'Incorrect Username or Password' });
+    }
+
+    res.status(200).json({ message: 'Login successful', accessToken: 'fake-jwt-token', roles: ['user'] });
+  });
+});
 
 // Start the server
 const PORT = 5000;
