@@ -20,6 +20,9 @@ function Navbar() {
           <Link to="/transaction">
             <button className="btn btn-outline-light ms-2" type="button">Transaction</button>
           </Link>
+          <Link to="/flaskform">
+            <button className="btn btn-outline-light ms-2" type="button">Test Form</button>
+          </Link>
         </form>
       </div>
     </nav>

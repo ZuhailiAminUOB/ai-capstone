@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Table</title>
+</head>
+<body>
+    <table border="1px">
+        <thead>
+            <td><strong>Distance From Home</strong></td>
+            <td><strong>Distance From Last Transaction</strong></td>
+            <td><strong>Median Purchase Price Ratio</strong></td>
+            <td><strong>Repeat Retailer</strong></td>
+            <td><strong>Used Chip</strong></td>
+            <td><strong>Used Pin</strong></td>
+            <td><strong>Online Order</strong></td>
+            <td></td>
+            <td></td>
+        </thead>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row["id"]}}</td>
+            <td>{{ row["distance_from_home"]}}</td>
+            <td>{{ row["distance_last_transaction"]}}</td>
+            <td>{{ row["ratio_median_purchase_price"]}}</td>
+            <td>{{ row["repeat_retailer"]}}</td>
+            <td>{{ row["used_chip"]}}</td>
+            <td>{{ row["used_pin"]}}</td>
+            <td>{{ row["online_order"]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form action="{{ url_for('clear_transactions') }}" method="POST">
+        <button type="submit">Clear Transaction Records</button>
+    </form>
+    <form action="{{ url_for('index') }}" method="GET">
+        <button type="submit">Back to Home</button>
+    </form>
+
+</body>
+</html>
+
+<!-- distance_from_home, distance_last_transaction, ratio_median_purchase_price, repeat_retailer, used_chip, used_pin, online_order -->

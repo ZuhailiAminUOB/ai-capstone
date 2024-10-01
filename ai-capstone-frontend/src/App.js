@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FraudParagraph from './components/FraudParagraph';
 import Register from './components/Register';
+import FlaskForm from './components/FlaskForm';
 
 function App() {
   const [transactionData, setTransactionData] = useState(null);
@@ -35,6 +36,7 @@ function App() {
               </>
             } />
             <Route path="/" element={<Navigate to="/register" />} />
+            <Route path="/flaskform" element={<FlaskForm onSubmit={handleFormSubmit}/>} />
           </Routes>
         </main>
       </div>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Registeration</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Register your credit card</h1>
+    <form id="cardRegisterForm">
+        <label for="name">Name: </label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="userAddress">Home Address: </label><br>
+        <select id="userAddress" name="userAddress">
+            <option value="New York">New York</option>
+            <option value="London">London</option>
+            <option value="Tokyo">Tokyo</option>
+            <option value="Singapore Polytechnic">Singapore Polytechnic</option>
+            <option value="Ngee Ann Polytechnic">Ngee Ann Polytechnic</option>
+        </select><br><br>
+
+        <label for="annual_income">Annual Income: </label><br>
+        <input type="number" id="annual_income" name="annual_income" required><br><br>
+
+        <label for="sellerLocation">Seller Location</label>
+        <select id="sellerLocation" name="sellerLocation">
+            <option value="Tampines Mall">Tampines Mall</option>
+            <option value="Orchard Road">Orchard Road</option>
+            <option value="Marina Bay Sands">Marina Bay Sands</option>
+            <option value="Australia">Australia</option>
+            <option value="China">China</option>
+        </select><br><br>
+
+        <label for="amount">Amount paid</label>
+        <input type="number" id="amount"><br><br>
+        
+        <label for="chipOrPin">Chip or Pin</label>
+        <select id="chipOrPin" name="chipOrPin">
+            <option value="Chip">Chip</option>
+            <option value="Pin">Pin</option>
+        </select><br><br>
+
+        <label for="onlineOrder">Online Order</label>
+        <select id="onlineOrder" name="onlineOrder">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+
+
+    <div id="map"></div>
+
+    <!-- Include Leaflet.js (for dynamic frontend map rendering) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        document.getElementById('cardRegisterForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const userAddress = document.getElementById('userAddress').value;
+            const annual_income = document.getElementById('annual_income').value;
+
+            // Send the selected location to the backend
+            const response = await fetch('/register_card', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: name, userAddress: userAddress, annual_income: annual_income })
+            });
+
+            // Receive the updated map data
+            const mapData = await response.json();
+
+            if (mapData.map_url) {
+                document.getElementById('map').innerHTML = `<iframe src="${mapData.map_url}" width="500" height="500"></iframe>`;
+            } else {
+                console.error(data.error);
+            }
+        });
+    </script>
+</body>
+
+</html>

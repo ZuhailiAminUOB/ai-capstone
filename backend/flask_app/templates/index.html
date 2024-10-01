@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UOB Capstone Fraud Detection</title>
+</head>
+<body>
+    <h1>Fraud Detection</h1>
+    <form action="/" method="POST">
+        <!-- Distance from home -->
+        <label for="distance_from_home">Distance from Home (in km):</label><br>
+        <input type="number" id="distance_from_home" name="distance_from_home" step="0.01" required><br><br>
+        
+        <!-- Distance from last transaction -->
+        <label for="distance_last_transaction">Distance from Last Transaction (in km):</label><br>
+        <input type="number" id="distance_last_transaction" name="distance_last_transaction" step="0.01" required><br><br>
+        
+        <!-- Ratio to median purchase price -->
+        <label for="ratio_median_purchase_price">Ratio to Median Purchase Price:</label><br>
+        <input type="number" id="ratio_median_purchase_price" name="ratio_median_purchase_price" step="0.01" required><br><br>
+        
+        <!-- Repeat retailer (0 or 1) -->
+        <label for="repeat_retailer">Repeat Retailer (0 or 1):</label><br>
+        <input type="number" id="repeat_retailer" name="repeat_retailer" min="0" max="1" required><br><br>
+        
+        <!-- Used chip (0 or 1) -->
+        <label for="used_chip">Used Chip (0 or 1):</label><br>
+        <input type="number" id="used_chip" name="used_chip" min="0" max="1" required><br><br>
+        
+        <!-- Used pin number (0 or 1) -->
+        <label for="used_pin">Used Pin Number (0 or 1):</label><br>
+        <input type="number" id="used_pin" name="used_pin" min="0" max="1" required><br><br>
+        
+        <!-- Online order (0 or 1) -->
+        <label for="online_order">Online Order (0 or 1):</label><br>
+        <input type="number" id="online_order" name="online_order" min="0" max="1" required><br><br>
+        
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if prediction %}
+    <h2>Transaction Status: {{ prediction }}</h2>
+    {% endif %}
+    {% if database_result %}
+    <h2> Database entry status: {{ database_result }}</h2>
+    {% endif %}
+
+    <a href="{{ url_for('data') }}">View Data</a><br>
+    <a href="{{ url_for('register_card') }}">Register Card</a>
+
+
+</body>
+</html>
