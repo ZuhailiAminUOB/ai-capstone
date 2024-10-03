@@ -1,12 +1,11 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation Regex
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{12,24}$/;
 const REGISTER_URL = 'http://localhost:5000/register'; // Ensure this is correct
 
 const Register = () => {
@@ -85,8 +84,6 @@ const Register = () => {
                 // Handle different status codes
                 if (response.status === 409) {
                     throw new Error('Username Taken');
-                }else if (response.status === 410) {
-                    throw new Error('Password Taken');
                 }else {
                     throw new Error('Registration Failed');
                 }
@@ -97,14 +94,14 @@ const Register = () => {
             errRef.current.focus();
         }
     }
-    
+
     return (
         <>
             {success ? (
                 <section>
                     <h1>Success</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="/login">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -155,7 +152,7 @@ const Register = () => {
                         />
                         <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            8 to 24 characters. Must include uppercase and lowercase letters, a number, and a special character.
+                            12 to 24 characters. Must include uppercase and lowercase letters, a number, and a special character.
                         </p>
 
                         {/* Confirm Password Input */}
@@ -185,7 +182,7 @@ const Register = () => {
                     <p>
                         Already registered?<br />
                         <span className="line">
-                            <a href="#">Sign In</a>
+                            <a href="/login">Sign In</a>
                         </span>
                     </p>
                 </section>
