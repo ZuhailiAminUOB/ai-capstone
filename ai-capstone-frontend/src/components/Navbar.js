@@ -14,6 +14,9 @@ function Navbar() {
           UOB Fraud Detection Web Application
         </Link>
         <form className="d-flex" role="search">
+          <Link to="/login">
+          <button className="btn btn-outline-light" type="button">Login</button>
+          </Link>
           <Link to="/register">
             <button className="btn btn-outline-light" type="button">Register</button>
           </Link>

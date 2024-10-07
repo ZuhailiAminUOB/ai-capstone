@@ -1,5 +1,6 @@
+require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2');
+const sqlite3 = require('sqlite3').verbose(); // SQLite library
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -7,67 +8,77 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-
-// CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend address (no `/register`)
-  credentials: true // Allow cookies/credentials
+  origin: 'http://localhost:3000', // Frontend address
+  credentials: true
 }));
 
-// MySQL connection
-const db = mysql.createConnection({
-  host: 'localhost', // or your database host
-  user: 'root', // your MySQL username
-  password: 'root', // your MySQL password
-  database: 'regdb' // your MySQL database name
-});
-
-db.connect((err) => {
+// SQLite connection
+const db = new sqlite3.Database(process.env.DB_FILE, (err) => {
   if (err) {
-    console.error('Error connecting to MySQL:', err);
+    console.error('Error connecting to SQLite:', err);
     return;
   }
-  console.log('Connected to MySQL');
+  console.log('Connected to SQLite');
+
+  // Create the table if it doesn't exist
+  db.run(`
+    CREATE TABLE IF NOT EXISTS reg (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Username TEXT NOT NULL UNIQUE,
+      Password TEXT NOT NULL
+    )
+  `, (err) => {
+    if (err) {
+      console.error('Error creating table:', err);
+      return;
+    }
+    console.log('Table reg created or already exists.');
+  });
 });
 
 // Registration route
 app.post('/register', (req, res) => {
   const { user, pwd } = req.body;
 
-  // Validate user and password input
   if (!user || !pwd) {
     return res.status(400).json({ message: 'Username and password are required.' });
   }
 
-  // Check if username already exists
-  const checkUserQuery = 'SELECT * FROM registers WHERE Username = ?';
-  db.query(checkUserQuery, [user], (err, results) => {
+  db.get('SELECT * FROM reg WHERE Username = ?', [user], (err, row) => {
     if (err) {
       return res.status(500).json({ message: 'Error checking user.' });
     }
-    if (results.length > 0) {
+    if (row) {
       return res.status(409).json({ message: 'Username taken' });
     }
 
-    // Check if password already exists
-    const checkPwdQuery = 'SELECT * FROM registers WHERE Password = ?';
-    db.query(checkPwdQuery, [pwd], (err, results) => {
+    db.run('INSERT INTO reg (Username, Password) VALUES (?, ?)', [user, pwd], function(err) {
       if (err) {
-        return res.status(500).json({ message: 'Error checking password.' });
+        return res.status(500).json({ message: 'Error registering user.' });
       }
-      if (results.length > 0) {
-        return res.status(410).json({ message: 'Password taken' });
-      }
-
-      // Insert the new user into the database
-      const insertUserQuery = 'INSERT INTO registers (Username, Password) VALUES (?, ?)';
-      db.query(insertUserQuery, [user, pwd], (err, result) => {
-        if (err) {
-          return res.status(500).json({ message: 'Error registering user.' });
-        }
-        res.status(201).json({ message: 'User registered successfully!' });
-      });
+      res.status(201).json({ message: 'User registered successfully!' });
     });
+  });
+});
+
+// Login route
+app.post('/login', (req, res) => {
+  const { user, pwd } = req.body;
+
+  if (!user || !pwd) {
+    return res.status(400).json({ message: 'Username and password are required.' });
+  }
+
+  db.get('SELECT * FROM reg WHERE Username = ? AND Password = ?', [user, pwd], (err, row) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error checking login credentials.' });
+    }
+    if (!row) {
+      return res.status(401).json({ message: 'Incorrect Username or Password' });
+    }
+
+    res.status(200).json({ message: 'Login successful', accessToken: 'fake-jwt-token', roles: ['user'] });
   });
 });
 

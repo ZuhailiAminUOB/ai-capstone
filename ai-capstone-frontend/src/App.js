@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import FraudParagraph from './components/FraudParagraph';
 import Register from './components/Register';
 import FlaskForm from './components/FlaskForm';
+import Login from './components/Login';
 
 function App() {
   const [transactionData, setTransactionData] = useState(null);
@@ -28,6 +29,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/register" element={<Register onSubmit={handleFormSubmit} />} />
+            <Route path ="/login" element={<Login onSubmit={handleFormSubmit} />} />
             <Route path="/transaction" element={
               <>
                 <FraudParagraph/>

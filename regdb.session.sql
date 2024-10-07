@@ -1,4 +1,4 @@
-select * from registers;
+SELECT * FROM registers; 
 
 
 
