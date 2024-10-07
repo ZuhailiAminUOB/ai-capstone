@@ -39,50 +39,85 @@
             <h2 class="text-3xl font-bold text-blue-900">Checking for fraudulent transactions</h2>
             <p class="mt-3 text-blue-700">Stay secure by monitoring unusual activity and safeguarding your financial well-being.</p>
         </div>
-    
-    <h1>Register your credit card</h1>
-    <form id="cardRegisterForm">
-        <label for="name">Name: </label><br>
-        <input type="text" id="name" name="name" required><br><br>
 
-        <label for="userAddress">Home Address: </label><br>
-        <select id="userAddress" name="userAddress">
-            <option value="New York">New York</option>
-            <option value="London">London</option>
-            <option value="Tokyo">Tokyo</option>
-            <option value="Singapore Polytechnic">Singapore Polytechnic</option>
-            <option value="Ngee Ann Polytechnic">Ngee Ann Polytechnic</option>
-        </select><br><br>
+        <!-- Seller Location -->
+        <div class="mt-10 bg-white p-8 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold text-blue-900 mb-6">Enter Transaction Details</h3>
+            <form id="sellerLocation" class="space-y-6">
+                <div>
+                    <label for="sellerLocation" class="block text-sm font-medium text-gray-700">Seller Location</label>
+            
+                        <select id="sellerLocation" name="sellerLocation" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600">
 
-        <label for="annual_income">Annual Income: </label><br>
-        <input type="number" id="annual_income" name="annual_income" required><br><br>
-
-        <label for="sellerLocation">Seller Location</label>
-        <select id="sellerLocation" name="sellerLocation">
-            <option value="Tampines Mall">Tampines Mall</option>
-            <option value="Orchard Road">Orchard Road</option>
-            <option value="Marina Bay Sands">Marina Bay Sands</option>
-            <option value="Australia">Australia</option>
-            <option value="China">China</option>
-        </select><br><br>
-
-        <label for="amount">Amount paid</label>
-        <input type="number" id="amount"><br><br>
+                    <option value="Tampines Mall">Tampines Mall</option>
+                    <option value="Orchard Road">Orchard Road</option>
+                    <option value="Marina Bay Sands">Marina Bay Sands</option>
+                    <option value="Australia">Australia</option>
+                    <option value="China">China</option>
+        </select>
         
-        <label for="chipOrPin">Chip or Pin</label>
-        <select id="chipOrPin" name="chipOrPin">
-            <option value="Chip">Chip</option>
-            <option value="Pin">Pin</option>
-        </select><br><br>
+                </div>
 
-        <label for="onlineOrder">Online Order</label>
-        <select id="onlineOrder" name="onlineOrder">
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select><br><br>
+<!-- Amount paid -->
+                <div>
+                    <label for="amountpaid" class="block text-sm font-medium text-gray-700">Amount paid:</label>
+                    <input type="number" id="annual_income" name="annual_income" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600">
+                </div>
 
-        <button type="submit">Submit</button>
-    </form>
+<!-- Chip or pin -->
+                <div>
+                    <label for="chipOrPin">Chip or Pin</label>
+                    <select id="chipOrPin" name="chipOrPin" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600">
+                    <option value="Chip">Chip</option>
+                    <option value="Pin">Pin</option>
+                </select>
+                </div>
+
+ <!-- Online Order -->
+                <div>
+                    <label for="onlineOrder">Online Order</label>
+                    <select id="onlineOrder" name="onlineOrder" class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-600 focus:border-blue-600">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select><br><br>
+                </div>               
+
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-lg w-full font-bold">
+                        <a>Submit</a>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Additional Card-like Section -->
+        <div class="mt-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <span class="material-icons text-blue-600">check_circle</span>
+                    <h4 class="text-xl font-bold text-blue-900 mt-4">Secure Payment</h4>
+                    <p class="mt-2 text-gray-600">Rest assured with UOB's secure payment features.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <span class="material-icons text-blue-600">credit_card</span>
+                    <h4 class="text-xl font-bold text-blue-900 mt-4">Flexible Card Options</h4>
+                    <p class="mt-2 text-gray-600">Choose from a variety of credit cards that suit your lifestyle.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <span class="material-icons text-blue-600">emoji_events</span>
+                    <h4 class="text-xl font-bold text-blue-900 mt-4">Exclusive Rewards</h4>
+                    <p class="mt-2 text-gray-600">Earn exclusive rewards with every transaction.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -118,6 +153,13 @@
             }
         });
     </script>
+    
+    <!-- Footer Section -->
+    <footer class="bg-blue-900 text-white p-4 mt-10">
+        <div class="text-center text-sm">
+            &copy; 2024 UOB. All rights reserved.
+        </div>
+    </footer>
 </body>
 
 </html>
