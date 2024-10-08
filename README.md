@@ -14,3 +14,7 @@
 ## run npm start in the ai-capstone-frontend terminal 
 
 ### REACT APP SHOULD START ! 
+
+///
+# To open register card webpage, simply "go live" under register_card.html
+## After that, we can navigate to add_transaction.html by clicking the transaction button
