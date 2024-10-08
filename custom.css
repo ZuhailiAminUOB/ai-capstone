@@ -266,7 +266,7 @@ input.form-control:hover {
     color: white;
     transition: 0.3s;
     background-color: #1D4ED8;
-    width: 750px;
+    width: 100%;
     border-radius: 15px;
     font-weight: bold;
     border: none;
