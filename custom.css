@@ -250,9 +250,29 @@ input.form-control:hover {
     /*border: 1px solid #000;*/
 }
 
-/* transaction */
-.transaction {
-    margin: 100px; /* Adjust the spacing as needed */
-    border: solid;
-    background-color: black;
+/* submit and transaction buttons */
+.submit-container {
+    display: flex;
+    flex-direction: column; /* Stack the buttons vertically */
+    align-items: center; /* Center the buttons horizontally */
+    gap: 1px; /* Adds space between buttons */
+}
+
+
+.submit {
+    margin: 10px; /* Adjust the spacing as needed */
+    text-align: center;
+    padding: 12px;
+    color: white;
+    transition: 0.3s;
+    background-color: #1D4ED8;
+    width: 750px;
+    border-radius: 15px;
+    font-weight: bold;
+    border: none;
+}
+
+.submit:hover {
+    color: white;
+    background-color: #13286B;
 }
