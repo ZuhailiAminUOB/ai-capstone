@@ -9,19 +9,27 @@
             height: 500px;
             width: 100%;
         }
+        /* Body background gradient */
+        body {
+            background: linear-gradient(to bottom, #EBF4F9, #0366AC);
+        }
+        /* Navbar background color */
+        .navbar {
+            background-color: #005EB8;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Material UI Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="custom.css">
 </head>
-<body class="bg-gray-100">
+<body>
     <!-- Navigation Bar -->
-    <nav class="bg-blue-900 text-white p-4 flex justify-between items-center">
+    <nav class="navbar text-white p-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
-            <span class="material-icons">credit_card</span>
-            <h1 class="text-xl font-bold">UOB | TMRW</h1>
+            <img src="/ai-capstone-frontend/UOB_Logo.svg.png" alt="UOB Logo" class="uob-logo">
         </div>
         <div>
             <button class="bg-blue-700 hover:bg-blue-800 py-2 px-4 rounded-lg font-bold">
@@ -29,7 +37,7 @@
             </button>
         </div>
     </nav>
-
+    
     <!-- Main Content Section -->
     <div class="max-w-screen-lg mx-auto mt-10">
         <!-- Title & Intro -->
